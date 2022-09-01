@@ -19,13 +19,13 @@ defmodule LiveViewStudioWeb.LightLive do
   # this callback is mandatory as it defines what the view should render (in terms of static HTML)
   # assigns is the assigns map of the socket struct as set in mount(). It contains the state.
   def render(assigns) do
-    # the sigil L is used to define template code
-    ~L"""
+    # the sigil H is used to define template code
+    ~H"""
       <h1>Light</h1>
       <div id="light">
         <div class="meter">
-          <span style="width: <%= @brightness %>%">
-          <%= @brightness %> %
+          <span style={"width: #{@brightness}%"}>
+            <%= @brightness %>%
           </span>
         </div>
 
@@ -34,6 +34,14 @@ defmodule LiveViewStudioWeb.LightLive do
         -->
         <button phx-click="off">
           <img src="images/light-off.svg" />
+        </button>
+
+        <button phx-click="down">
+          <img src="images/down.svg" />
+        </button>
+
+        <button phx-click="up">
+          <img src="images/up.svg" />
         </button>
 
         <button phx-click="on">
@@ -57,6 +65,21 @@ defmodule LiveViewStudioWeb.LightLive do
 
   def handle_event("off", _, socket) do
     socket = assign(socket, :brightness, 0)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("up", _, socket) do
+    # the update() callback is used to update the state, it uses a callback to set the new value
+    socket = update(socket, :brightness, fn(brightness) -> brightness + 10 end)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("down", _, socket) do
+
+    # using the weird ass syntax where &1 is the first parameter (ᴗ_ ᴗ。)
+    socket = update(socket, :brightness, &(&1 - 10))
 
     {:noreply, socket}
   end
