@@ -48,6 +48,14 @@ defmodule LiveViewStudioWeb.LightLive do
           <img src="images/light-on.svg" />
         </button>
 
+        <section style="margin-top:24px">
+
+          <button phx-click="random">
+            Random
+          </button>
+
+        </section>
+
       </div>
     """
   end
@@ -80,6 +88,14 @@ defmodule LiveViewStudioWeb.LightLive do
 
     # using the weird ass syntax where &1 is the first parameter (ᴗ_ ᴗ。)
     socket = update(socket, :brightness, &(&1 - 10))
+
+    {:noreply, socket}
+  end
+
+  def handle_event("random", _, socket) do
+    random_value = :rand.uniform(100)
+
+    socket = update(socket, :brightness, fn(_brightness) -> random_value end)
 
     {:noreply, socket}
   end
