@@ -7,6 +7,9 @@ defmodule LiveViewStudioWeb.LightLive do
   # params contains query and router parameters
   # session contains private session data
   def mount(_params, _session, socket) do
+
+    IO.puts "Mount #{inspect(self())}"
+
     #assign the initial state of the live view to the socket. The assign() function returns a socket
     # eg. we set the initial brightness to 10
     # (if we want to assign multiple args we use a key-value map)
@@ -19,6 +22,9 @@ defmodule LiveViewStudioWeb.LightLive do
   # this callback is mandatory as it defines what the view should render (in terms of static HTML)
   # assigns is the assigns map of the socket struct as set in mount(). It contains the state.
   def render(assigns) do
+
+    IO.puts "Render #{inspect(self())}"
+
     # the sigil H is used to define template code
     ~H"""
       <h1>Light</h1>
@@ -62,6 +68,9 @@ defmodule LiveViewStudioWeb.LightLive do
 
   # callback to handle events (event_name, metadata, socket)
   def handle_event("on", _, socket) do
+
+    IO.puts "ON #{inspect(self())}"
+
     #use the assign method to set the new state
     #when the state is changed, the render method is called again but it only sends to the client
     #the part of the view that actually changed, not the whole thing
